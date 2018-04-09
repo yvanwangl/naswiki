@@ -1,0 +1,60 @@
+.DocsList-wrapper {
+    position: relative;
+    font-size: 16px;
+    cursor: pointer;
+}
+.DocsList-wrapper.active ul {
+    max-height: 500px;
+    transition: max-height 0.5s ease-in;
+}
+.DocsList-wrapper::before {
+    position: absolute;
+    top: 9px;
+    left: -16px;
+    content: '';
+    width: 0;
+    height: 0;
+    border: 6px solid #ccc;
+    border-color: #576b95 transparent transparent transparent;
+    transform: rotate(-90deg);
+    transition: all ease .5s;
+    transform-origin: 6px 3px;
+}
+.DocsList-wrapper.active::before {
+    transform: rotate(0deg);
+}
+.DocsList-wrapper ul {
+    max-height: 0;
+    transition: max-height 0.4s ease-out;
+    overflow: hidden;
+    padding-left: 10px;
+}
+.DocsList-wrapper ul li {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+}
+.DocsList-version {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+    padding-right: 10px;
+}
+.DcosList-dotLine {
+    display: inline-block;
+    flex-grow: 1;
+    height: 0;
+    flex-flow: 1;
+    border-bottom: 1px dashed #ccc;
+}
+.DocsList-createInstance {
+    padding-left: 10px;
+    color: #ccc;
+}
+

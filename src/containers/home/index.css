@@ -1,0 +1,12 @@
+.Home-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    padding-top: 60px;
+}
+.Home-container .Home-uploadButton {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
