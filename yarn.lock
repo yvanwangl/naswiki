@@ -186,9 +186,9 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-antd@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-3.4.0.tgz#ad67872ab3d3e31d32b2b6feabc2fa5f5b27a48e"
+antd@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-3.4.1.tgz#9f93c712e14d692a3db70fa3f254c79874cd3822"
   dependencies:
     array-tree-filter "^2.0.0"
     babel-runtime "6.x"
@@ -6165,8 +6165,8 @@ rc-tree@~1.7.1:
     warning "^3.0.0"
 
 rc-tree@~1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/rc-tree/-/rc-tree-1.8.0.tgz#c9eb6c45337314526e48284b7ee6c9f6df1cacc7"
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/rc-tree/-/rc-tree-1.8.2.tgz#b838d5a789ef9fc1a6b098adf77465d54dd041a0"
   dependencies:
     babel-runtime "^6.23.0"
     classnames "2.x"
