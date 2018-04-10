@@ -27,7 +27,7 @@ app.get('*', function (request, response) {
 });
 
 // start the server
-const port = PORT || 8086;
+const port = PORT || 8088;
 const env = NODE_ENV || 'production';
 
 console.log(port);

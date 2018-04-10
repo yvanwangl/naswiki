@@ -206,7 +206,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                         })(
                             <Upload
                                 name="logo"
-                                action="http://localhost:8082/api/upload"
+                                action="/api/upload"
                                 style={{ float: 'left' }}
                                 withCredentials={true}
                                 onChange={this.handleUploadChange}
