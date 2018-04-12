@@ -5,6 +5,7 @@ import Login from './containers/login/components/Login';
 import Registor from './containers/login/components/Registor';
 import Home from './containers/home/Home';
 import './App.css';
+const { registor } = require('./system.config');
 
 export interface AppProps {
     history: object;
@@ -29,7 +30,7 @@ class App extends React.Component<object & RouteComponentProps<object>, AppState
                 <main className='App-content'>
                     <Switch>
                         <Route path="/login" component={Login} />
-                        <Route path="/registor" component={Registor} />
+                        {registor && <Route path="/registor" component={Registor} />}
                         <Route path="/" component={Home} />
                     </Switch>
                 </main>

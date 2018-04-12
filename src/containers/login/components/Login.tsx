@@ -6,6 +6,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { Form, Icon, Input, Button } from 'antd';
 const FormItem = Form.Item;
 import './index.css';
+const { registor } = require('../../../system.config');
 
 export interface LoginProps {
     login: LoginStore;
@@ -65,7 +66,7 @@ class Login extends React.Component<LoginProps & FormComponentProps & RouteCompo
                         )}
                     </FormItem>
                     <FormItem>
-                        <a href="/registor" className='LinkButton'> 注册 </a>
+                        {registor && <a href="/registor" className='LinkButton'> 注册 </a>}
                         <Button type="primary" htmlType="submit" className="Login-form-button">
                             登录
                         </Button>

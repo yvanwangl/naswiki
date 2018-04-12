@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: "recatch-ui",
+            name: "modianwiki",
             script: "./build/service.js",
             watch: true,
             env: {
@@ -13,6 +13,7 @@ module.exports = {
                 "PROXY_PORT": 8090,
                 "PORT": 8088,
                 "NODE_ENV": "production",
+                "REGISTOR": false
             }
         }
     ]
