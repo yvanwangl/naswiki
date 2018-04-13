@@ -58,7 +58,7 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
                                         <li key={index}>
                                             <a href={link} target='_blank' title={version} className='DocsList-version'> {version} </a>
                                             <span className='DcosList-dotLine'></span>
-                                            <span className='DocsList-createInstance'>{moment(createInstance).format('YYYY-MM-DD HH:MM')}</span>
+                                            <span className='DocsList-createInstance'>{moment(createInstance).format('YYYY-MM-DD HH:mm')}</span>
                                         </li>
                                     )
                                 }
