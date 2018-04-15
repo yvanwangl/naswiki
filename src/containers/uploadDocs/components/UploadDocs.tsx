@@ -6,6 +6,7 @@ import UploadDocsStore from '../UploadDocsStore';
 import { FormComponentProps } from 'antd/lib/form';
 import { Form, Input, Upload, Button, Icon, Select, Modal } from 'antd';
 import DocsNameModal from './DocsNameModal';
+const { httpServer } = require('../../../system.config');
 import './index.css';
 
 const FormItem = Form.Item;
@@ -203,10 +204,11 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                         {getFieldDecorator('upload', {
                             valuePropName: 'fileList',
                             getValueFromEvent: this.normFile,
+                            rules: [{ required: true, message: '请上传附件' }],
                         })(
                             <Upload
                                 name="logo"
-                                action="/api/upload"
+                                action={`${httpServer}/api/upload`}
                                 style={{ float: 'left' }}
                                 withCredentials={true}
                                 onChange={this.handleUploadChange}
@@ -220,9 +222,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     <FormItem
                         {...formItemLayout}
                     >
-                        {getFieldDecorator('filename', {
-                            rules: [{ required: true, message: '请输入文档版本号' }],
-                        })(
+                        {getFieldDecorator('filename')(
                             <Input
                                 type='hidden'
                             />

@@ -4,7 +4,7 @@ console.log(process.env.NODE_ENV);
 
 //开发模式，跨域请求
 //跨域请求url
-const httpServerDev = 'http://localhost:8088';
+const httpServerDev = 'http://localhost:8090';
 //跨域请求头配置
 const defaultOptionsDev = {
      mode: 'cors',
