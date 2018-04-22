@@ -75,13 +75,20 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
         e.preventDefault();
         form.validateFields((err, values) => {
             if (!err) {
-                doSubmitDocsInfo(values).then(()=> {
-                    Modal.success({
-                        title: '上传成功',
-                        content: '恭喜小主，上传成功啦 😊'
-                    });
-                    form.resetFields();
-                    history.push('/');
+                doSubmitDocsInfo(values).then((result)=> {
+                    if(result.success){
+                        Modal.success({
+                            title: '上传成功',
+                            content: '恭喜小主，上传成功啦 😊'
+                        });
+                        form.resetFields();
+                        history.push('/');
+                    } else {
+                        Modal.error({
+                            title: '上传失败',
+                            content: result.errorCode
+                        });
+                    }    
                 },
                 ()=> {
                     Modal.error({
@@ -98,9 +105,9 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
         history.push('/');
     };
 
-    handleAddDocsName = () => {
+    handleAddName = (addType: string) => {
         const { uploadDocs } = this.props;
-        uploadDocs.showModal();
+        uploadDocs.showModal(addType);
     };
 
     normFile = (e: any) => {
@@ -123,24 +130,31 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
     };
 
     componentWillUpdate(nextProps: UploadDocsProps & FormComponentProps) {
-        const { form: { setFieldsValue }, uploadDocs: { newDocsNameId, resetNewDocsNameId } } = nextProps;
+        const { form: { setFieldsValue }, uploadDocs: { newDocsNameId, newDocsTypeId,  resetNewDocsId } } = nextProps;
         if (newDocsNameId) {
             setFieldsValue({
                 docsNameId: newDocsNameId
             });
-            resetNewDocsNameId();
+            resetNewDocsId('newDocsNameId');
+        }
+        if (newDocsTypeId) {
+            setFieldsValue({
+                docsTypeId: newDocsTypeId
+            });
+            resetNewDocsId('newDocsTypeId');
         }
     }
 
     componentDidMount() {
-        const { uploadDocs: { fetchDocsNameList } } = this.props;
+        const { uploadDocs: { fetchDocsNameList, fetchDocsTypeList } } = this.props;
         fetchDocsNameList();
+        fetchDocsTypeList();
     }
 
     modalCreator = () => <DocsNameModal />
 
     render() {
-        const { form: { getFieldDecorator }, uploadDocs: { docsNameList } } = this.props;
+        const { form: { getFieldDecorator }, uploadDocs: { docsNameList, docsTypeList } } = this.props;
         return (
             <div className='UploadDocs-container'>
                 <Form onSubmit={this.handleSubmit} className="uploadDocs-form">
@@ -168,8 +182,36 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     <FormItem
                         style={{ textAlign: 'right' }}
                     >
-                        <Button onClick={this.handleAddDocsName}>
+                        <Button onClick={()=> this.handleAddName('docsName')}>
                             + 文档名称
+                        </Button>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="文档类型"
+                    >
+                        {getFieldDecorator('docsTypeId', {
+                            rules: [{ required: true, message: '请输入文档类型' }],
+                        })(
+                            <Select
+                                showSearch
+                                placeholder="请选择文档类型"
+                                optionFilterProp="children"
+                                filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                            >
+                                {
+                                    docsTypeList.map(({ _id, name }) =>
+                                        <Option value={_id} key={_id}>{name}</Option>
+                                    )
+                                }
+                            </Select>
+                        )}
+                    </FormItem>
+                    <FormItem
+                        style={{ textAlign: 'right' }}
+                    >
+                        <Button onClick={()=> this.handleAddName('docsType')}>
+                            + 文档类型
                         </Button>
                     </FormItem>
                     <FormItem

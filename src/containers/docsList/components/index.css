@@ -1,13 +1,11 @@
-.DocsList-wrapper {
+.DocsList-wrapper,
+.DocsVersions-wrapper {
     position: relative;
     font-size: 16px;
     cursor: pointer;
 }
-.DocsList-wrapper.active ul {
-    max-height: 500px;
-    transition: max-height 0.5s ease-in;
-}
-.DocsList-wrapper::before {
+.DocsList-wrapper::before,
+.DocsVersions-wrapper::before {
     position: absolute;
     top: 9px;
     left: -16px;
@@ -20,16 +18,27 @@
     transition: all ease .5s;
     transform-origin: 6px 3px;
 }
-.DocsList-wrapper.active::before {
+.DocsList-wrapper.active::before,
+.DocsVersions-wrapper.active::before {
     transform: rotate(0deg);
 }
-.DocsList-wrapper ul {
+.DocsList-wrapper.active>ul,
+.DocsVersions-wrapper.active>ul {
+    max-height: 500px;
+    transition: max-height 0.5s ease-in;
+}
+.DocsList-wrapper>ul,
+.DocsVersions-wrapper>ul {
     max-height: 0;
     transition: max-height 0.4s ease-out;
     overflow: hidden;
-    padding-left: 10px;
+    padding-left: 20px;
 }
-.DocsList-wrapper ul li {
+.DocsList-wrapper>ul>li {
+    list-style: none;
+    margin: 0;
+}
+.DocsVersions-wrapper>ul>li {
     list-style: none;
     margin: 0;
     display: flex;

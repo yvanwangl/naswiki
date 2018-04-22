@@ -6,12 +6,20 @@ export interface DocsNameModel {
     name: string;
 }
 
+export interface DocsTypeModel {
+    _id: string;
+    name: string;
+}
+
 class UploadDocsStore {
 
     @observable currentPage: number = 1;
+    @observable addType: string = '';
     @observable visible: boolean = false;
     @observable docsNameList: Array<DocsNameModel> =[];
+    @observable docsTypeList: Array<DocsTypeModel> =[];
     @observable newDocsNameId: string = '';
+    @observable newDocsTypeId: string = '';
 
     rootStore: object;
 
@@ -21,8 +29,9 @@ class UploadDocsStore {
     }
 
     @action.bound
-    showModal(){
+    showModal(addType: string){
         this.visible = true;
+        this.addType = addType;
     }
 
     @action.bound
@@ -31,8 +40,8 @@ class UploadDocsStore {
     }
 
     @action.bound
-    resetNewDocsNameId(){
-        this.newDocsNameId = '';
+    resetNewDocsId(type: string){
+        this[type] = '';
     }
 
     @action.bound
@@ -44,20 +53,49 @@ class UploadDocsStore {
         return {success, data};
     }
 
+    /**
+     * 增加文档名称 或 文档类型
+     * 根据 addType 字段进行区分，
+     * 'docsName' | 'docsType'
+     * 
+     * @param {*} docsNameInfo 
+     * @returns 
+     * @memberof UploadDocsStore
+     */
     @action.bound
-    async doAddDocsName(docsNameInfo: any) {
+    async doAddName(docsNameInfo: any) {
         //数据提交前对数据清洗
         //Object.keys(userInfo).map((key: string) => userInfo[key] = filterInput(link[key]));
-        let {success, data} = await request('/api/submitDocsInfo/addDocsName', {
+        let {success, data} = await request('/api/submitDocsInfo/addDocsNameOrType', {
             method: 'post',
             body: JSON.stringify(docsNameInfo)
         });
         if(success){
             this.visible = false;
-            this.newDocsNameId = data._id;
-            this.docsNameList.unshift(data);
+            if(docsNameInfo.addType === 'docsType'){
+                this.newDocsTypeId = data._id;
+                this.docsTypeList.unshift(data);
+            }else {
+                this.newDocsNameId = data._id;
+                this.docsNameList.unshift(data);
+            }
         }
         return { success, data };
+    }
+
+    /**
+     * 查询文档类型
+     * 
+     * @returns 
+     * @memberof UploadDocsStore
+     */
+    @action.bound
+    async fetchDocsTypeList() {
+        let { success, data} = await request('/api/submitDocsInfo/docsTypeList');
+        if(success){
+            this.docsTypeList = data;
+        }
+        return {success, data};
     }
 
     @action.bound

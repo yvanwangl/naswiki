@@ -30,6 +30,7 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
     }
 
     handleDocsClick = (e: any) => {
+        e.stopPropagation();
         let ele = e.target;
         ele.classList.toggle('active');
     };
@@ -37,6 +38,22 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
     handleUploadButton = () => {
         let { history } = this.props;
         history.push('/upload');
+    };
+
+    // 对文档类型进行排序：产品、交互、设计
+    sortDocsTypeList = (arrayList: Array<Object>) => {
+        let sortType = ['产品', '交互', '设计'];
+        let result: Array<Object> = [];
+        arrayList.map((type: any) => {
+            let index = sortType.findIndex((item) => item === type.docsTypeName);
+            if(index > -1){
+                result[index] = type;
+            } else {
+                sortType.push(type.docsTypeName);
+                result[sortType.length-1] = type;
+            }
+        });
+        return result;
     };
 
     render() {
@@ -54,12 +71,20 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
                             {docs.docsName}
                             <ul>
                                 {
-                                    docs.versions.map(({link, version, createInstance}: any, index: number) =>
-                                        <li key={index}>
-                                            <a href={link} target='_blank' title={version} className='DocsList-version'> {version} </a>
-                                            <span className='DcosList-dotLine'></span>
-                                            <span className='DocsList-createInstance'>{moment(createInstance).format('YYYY-MM-DD HH:mm')}</span>
-                                        </li>
+                                    this.sortDocsTypeList(docs.docsTypes).map(({docsTypeId, docsTypeName, versions}: any, index: number) =>
+                                        <li key={docsTypeId} className='DocsVersions-wrapper' onClick={(e) => this.handleDocsClick(e)}>
+                                            {docsTypeName}
+                                            <ul>
+                                                {
+                                                    versions.map(({link, version, createInstance}: any, vindex: number) =>
+                                                    <li key={vindex}>
+                                                        <a href={link} target='_blank' title={version} className='DocsList-version'> {version} </a>
+                                                        <span className='DcosList-dotLine'></span>
+                                                        <span className='DocsList-createInstance'>{moment(createInstance).format('YYYY-MM-DD HH:mm')}</span>
+                                                    </li>) 
+                                                }
+                                            </ul>  
+                                        </li>               
                                     )
                                 }
                             </ul>

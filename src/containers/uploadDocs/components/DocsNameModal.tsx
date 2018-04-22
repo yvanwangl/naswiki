@@ -25,10 +25,6 @@ export interface DocsNameProps {
 @observer
 class DocsNameModal extends React.Component<DocsNameProps & FormComponentProps> {
     state = { visible: false }
-    showModal = () => {
-        const { uploadDocs } = this.props;
-        uploadDocs.showModal();
-    }
     hideModal = () => {
         const { uploadDocs } = this.props;
         uploadDocs.hideModal();
@@ -37,15 +33,24 @@ class DocsNameModal extends React.Component<DocsNameProps & FormComponentProps> 
         let { form, uploadDocs } = this.props;
         form.validateFields((err, values) => {
             if (!err) {
-                uploadDocs.doAddDocsName(values).then((result)=> form.resetFields());
+                values['addType'] = uploadDocs.addType;
+                uploadDocs.doAddName(values).then((result)=> form.resetFields());
             }
         });
     };
     render() {
-        let { form: { getFieldDecorator }, uploadDocs: { visible } } = this.props;
+        let { form: { getFieldDecorator }, uploadDocs: { visible, addType } } = this.props;
+        let modalTitle = '添加文档名称';
+        let formLabel = '文档名称';
+        let formRequireMsg = '请输入文档版名称';
+        if(addType === 'docsType'){
+            modalTitle = '添加文档类型';
+            formLabel = '文档类型';
+            formRequireMsg = '请输入文档类型';
+        }
         return (
             <Modal
-                title="添加文档名称"
+                title={modalTitle}
                 visible={visible}
                 onOk={this.handleSubmit}
                 onCancel={this.hideModal}
@@ -55,12 +60,12 @@ class DocsNameModal extends React.Component<DocsNameProps & FormComponentProps> 
                 <Form onSubmit={this.handleSubmit} className="uploadDocs-form">
                     <FormItem
                         {...formItemLayout}
-                        label="文档名称"
+                        label={formLabel}
                     >
                         {getFieldDecorator('name', {
-                            rules: [{ required: true, message: '请输入文档版名称' }],
+                            rules: [{ required: true, message: formRequireMsg }],
                         })(
-                            <Input placeholder="文档名称"
+                            <Input placeholder={formLabel}
                             />
                         )}
                     </FormItem>
