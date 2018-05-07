@@ -29,5 +29,5 @@ module.exports = {
     httpServer: debug ? httpServerDev : httpServerProd,
     defaultOptions: debug ? defaultOptionsDev : defaultOptionsProd,
     limit: 30,
-    registor: process.env.REGISTOR
+    registor: true
 };
