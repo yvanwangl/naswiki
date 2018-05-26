@@ -1,0 +1,10 @@
+.Login-container {
+    padding-top: 50px;
+    width: 40%;
+}
+.Login-container .Login-form-button {
+    width: 100%;
+}
+.LinkButton {
+    float: right;
+}

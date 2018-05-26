@@ -1,0 +1,40 @@
+.UploadDocs-container {
+    width: 100%;
+}
+.UploadDocs-container form {
+    width: 70%;
+    margin: 40px auto 100px;
+}
+.UploadDocs-container .DocsList-header p{
+    margin-bottom: 0;
+}
+.UploadDocs-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px auto 0;
+    width: 70%;
+}
+.UploadDocs-title>h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.UploadDocs-title>h2:after {
+    width: 80%;
+    height: 4px;
+    content: '';
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #635AFF;
+}
+.UploadDocs-container .ant-btn-primary {
+    background-color: #8783EC;
+}
+.UploadDocs-container .ant-btn-primary:hover, 
+.UploadDocs-container .ant-btn-primary:focus {
+    background: #514ade;
+    border-color: #514ade;
+}

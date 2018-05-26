@@ -1,0 +1,161 @@
+.DocsList-container {
+    width: 100%;
+    background: rgba(243, 248, 251, 1);
+}
+
+.DocsList-result {
+    width: 70%;
+    margin: 0 auto 100px;
+    padding-bottom: 150px;
+}
+.DocsList-search {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0 0;
+}
+.DocsList-search>h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.DocsList-search>h2:after {
+    width: 80%;
+    height: 4px;
+    content: '';
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #635AFF;
+}
+.DocsList-search .ant-input-affix-wrapper {
+    width: 476px;
+    height: 38px;
+}
+.DocsList-search .ant-input-affix-wrapper input {
+    border-radius: 19px;
+}
+.DocsList-search .ant-input:hover,
+.DocsList-search .ant-input:focus {
+    border-color: #635AFF;
+}
+
+.DocsList-content {
+    padding-left: 14px;
+    margin-top: 52px;
+}
+
+.DocsList-content a,
+.DocsList-content a:active,
+.DocsList-content a:hover,
+.DocsList-content a:visited,
+.DocsList-content a {
+    text-decoration: none;
+}
+
+.DocsList-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.DocsList-item {
+    padding: 24px 48px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 3px rgba(232, 232, 232, 0.7);
+    margin-bottom: 20px;
+}
+
+.DocsList-item h2 {
+    font-size: 16px;
+    color: #163F59;
+}
+
+.DocsList-item p {
+    font-size: 14px;
+    color: #163F59;
+    line-height: 1.6;
+    margin: 14px 0;
+}
+
+.DocsList-createInstance {
+    font-size: 14px;
+    color: #7A8087;
+    margin-right: 8px;
+}
+
+.DocsList-docsType {
+    padding: 0 4px;
+    height: 22px;
+    line-height: 22px;
+    display: inline-block;
+    border-radius: 1px;
+    background-color: #635AFF;
+    color: #fff;
+    font-size: 12px;
+}
+
+ul>li {
+    list-style: none;
+    margin: 0;
+}
+
+.DocsVersions-wrapper>ul>li {
+    list-style: none;
+    margin: 0;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.DocsList-version {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+    padding-right: 10px;
+}
+
+.DcosList-dotLine {
+    display: inline-block;
+    flex-grow: 1;
+    height: 0;
+    flex-flow: 1;
+    border-bottom: 1px dashed #ccc;
+}
+
+.DocsList-info {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.DocsList-info li {
+    width: 100%;
+}
+
+.DocsList-loading {
+    padding: 20px;
+    text-align: center;
+}
+
+.DocsList-docsEmpty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 160px;
+}
+
+.DocsList-docsEmpty img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 30px;
+}
+
+.DocsList-docsEmpty p {
+    font-size: 14px;
+}
+
+.DocsList-docsEmpty p a {
+    color: #635AFF;
+}

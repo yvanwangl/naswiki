@@ -1,0 +1,116 @@
+.Home-container {
+    width: 100%;
+}
+
+.Home-container .Home-uploadButton {
+    width: 147px;
+    height: 36px;
+    line-height: 36px;
+    background: #F8375C;
+    color: #fff;
+    border: none;
+    margin-bottom: 50px;
+    box-shadow: 0px 2px 6px rgba(240, 74, 106, 0.43);
+}
+
+.Home-container .Home-uploadButton:hover {
+    color: #fff;
+    background: #F8375C;
+    box-shadow: 4px 4px 10px rgba(173, 57, 80, 0.86)
+}
+
+.App-feature {
+    margin: 0 auto;
+    background: rgba(243,248,251,1);
+    padding: 60px 0;
+}
+
+.App-feature ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.App-feature li {
+    text-align: center;
+    padding: 100px 20px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 30%;
+    transition: all ease-in-out 0.3s;
+}
+
+.App-feature li:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 10px rgba(91, 83, 255, 0.4);
+}
+
+.App-feature li div, .App-feature li h2, .App-feature li p {
+    width: 100%;
+}
+
+.App-feature li h2 {
+    font-size: 30px;
+    color: #262366;
+    margin-top: 40px;
+}
+.App-feature li p {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+.App-feature li img {
+    height: 140px;
+}
+.App-faq {
+    width: 69%;
+    margin: 0 auto;
+    padding: 90px 0 100px;
+}
+.App-faq h2 {
+    text-align: center;
+    font-size: 36px;
+}
+.App-faq h2 span {
+    display: inline-block;
+    position: relative;    
+}
+.App-faq h2 span:after {
+    width: 80%;
+    height: 4px;
+    content: '';
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #635AFF;
+}
+.App-faq .faqItem-q {
+    font-size: 18px;
+    color: #262366;
+    margin-top: 34px;
+    line-height: 1;
+}
+.App-faq li:first-child .faqItem-q {
+    margin-top: 60px;
+}
+.App-faq .faqItem-a {
+    font-size: 16px;
+    color: #262366;
+    padding-left: 46px;
+    margin-top: 16px;
+    line-height: 1;
+    font-weight: 200;
+    
+}
+.App-faq .faqItem-a a {
+    color: #635AFF;
+}
+.App-faq .faqItem-img {
+    width: 22px;
+    margin-right: 20px;
+}

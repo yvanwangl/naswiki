@@ -1,0 +1,42 @@
+.Header {
+    background: url('./topImg.png');
+    color: white;
+    position: relative;
+    padding-top: 124px;
+    padding-bottom: 68px;
+    box-sizing: border-box;
+}
+.Header.small {
+    padding-bottom: 24px;
+}
+
+.Header div {
+    width: 50%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.Header img {
+    width: 142px;
+    position: absolute;
+    top: 20px;
+    left: 40px;
+}
+
+.Header h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 120px;
+    line-height: 1;
+    font-family: FZLTTHJW--GB1;
+    text-indent: -6px;
+}
+
+.Header p {
+    color: #fff;
+    font-size: 50px;
+    line-height: 1;
+    font-weight: 100;
+    margin-bottom: 38px;
+    margin-top: -8px;
+}
