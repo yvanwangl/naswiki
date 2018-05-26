@@ -1,5 +1,10 @@
 import { action, observable } from 'mobx';
 import request from '../../utils/request';
+var NebPay = require("nebpay.js");
+var nebPay = new NebPay();
+var serialNumber; //交易序列号
+var dappContactAddress = "n1xtqJ6Zf1GdBVK4oGPVzvoaGPQKoy1fMXV";
+
 
 export interface DocsNameModel {
     _id: string;
@@ -16,8 +21,8 @@ class UploadDocsStore {
     @observable currentPage: number = 1;
     @observable addType: string = '';
     @observable visible: boolean = false;
-    @observable docsNameList: Array<DocsNameModel> =[];
-    @observable docsTypeList: Array<DocsTypeModel> =[];
+    @observable docsNameList: Array<DocsNameModel> = [];
+    @observable docsTypeList: Array<DocsTypeModel> = [];
     @observable newDocsNameId: string = '';
     @observable newDocsTypeId: string = '';
 
@@ -29,28 +34,28 @@ class UploadDocsStore {
     }
 
     @action.bound
-    showModal(addType: string){
+    showModal(addType: string) {
         this.visible = true;
         this.addType = addType;
     }
 
     @action.bound
-    hideModal(){
+    hideModal() {
         this.visible = false;
     }
 
     @action.bound
-    resetNewDocsId(type: string){
+    resetNewDocsId(type: string) {
         this[type] = '';
     }
 
     @action.bound
     async fetchDocsNameList() {
-        let { success, data} = await request('/api/submitDocsInfo/docsNameList');
-        if(success){
+        let { success, data } = await request('/api/submitDocsInfo/docsNameList');
+        if (success) {
             this.docsNameList = data;
         }
-        return {success, data};
+        return { success, data };
     }
 
     /**
@@ -66,16 +71,16 @@ class UploadDocsStore {
     async doAddName(docsNameInfo: any) {
         //数据提交前对数据清洗
         //Object.keys(userInfo).map((key: string) => userInfo[key] = filterInput(link[key]));
-        let {success, data} = await request('/api/submitDocsInfo/addDocsNameOrType', {
+        let { success, data } = await request('/api/submitDocsInfo/addDocsNameOrType', {
             method: 'post',
             body: JSON.stringify(docsNameInfo)
         });
-        if(success){
+        if (success) {
             this.visible = false;
-            if(docsNameInfo.addType === 'docsType'){
+            if (docsNameInfo.addType === 'docsType') {
                 this.newDocsTypeId = data._id;
                 this.docsTypeList.unshift(data);
-            }else {
+            } else {
                 this.newDocsNameId = data._id;
                 this.docsNameList.unshift(data);
             }
@@ -91,22 +96,28 @@ class UploadDocsStore {
      */
     @action.bound
     async fetchDocsTypeList() {
-        let { success, data} = await request('/api/submitDocsInfo/docsTypeList');
-        if(success){
+        let { success, data } = await request('/api/submitDocsInfo/docsTypeList');
+        if (success) {
             this.docsTypeList = data;
         }
-        return {success, data};
+        return { success, data };
     }
 
     @action.bound
-    async doSubmitDocsInfo(docInfo: object) {
+    async doSubmitDocsInfo({docsName, docsType, docsIntro, createInstance, docsLink}: any) {
         //数据提交前对数据清洗
         //Object.keys(userInfo).map((key: string) => userInfo[key] = filterInput(link[key]));
-        let result = await request('/api/submitDocsInfo/addDocsInfo', {
-            method: 'post',
-            body: JSON.stringify(docInfo)
+        var to = dappContactAddress;
+        var value = "0";
+        var callFunction = "save";
+        var callArgs = "[\""+docsName+"\",\""+docsType+"\",\""+docsIntro+"\",\""+createInstance+"\",\""+docsLink+"\"]";
+        console.log(callArgs);
+        serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+            listener: function (resp: any) {
+                console.log("thecallback is " + resp)
+            }
         });
-        return result;
+        return {success: true, errorCode: ''};
     }
 
     @action.bound

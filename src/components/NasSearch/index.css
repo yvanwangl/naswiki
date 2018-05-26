@@ -1,0 +1,9 @@
+.Nas-search .ant-btn-primary {
+    background: #8783EC;
+    border: none;
+}
+
+.Nas-search .ant-btn-primary:hover {
+    background: #514ade;
+    border-color: #514ade;
+}

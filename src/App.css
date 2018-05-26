@@ -9,18 +9,7 @@
 }
 
 .App-header {
-  background-color: #21b6c7;
-  height: 150px;
-  padding: 20px;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.App-header h1 {
-  text-align: center;
-  color: #fff;
-  margin: 0;
+  position: relative;
 }
 .App-content {
   display: flex;
@@ -33,6 +22,23 @@
 
 .App-intro {
   font-size: large;
+}
+
+footer {
+  bottom: 0;
+  width: 100%;
+  padding: 40px;
+  background:rgba(249,250,252,1);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+footer p {
+  text-align: left;
+  color: #4C4F57;
+}
+footer img {
+  width: 142px;
 }
 
 @keyframes App-logo-spin {

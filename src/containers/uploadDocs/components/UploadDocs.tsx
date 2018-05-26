@@ -4,55 +4,29 @@ import { inject, observer } from 'mobx-react';
 import * as moment from 'moment';
 import UploadDocsStore from '../UploadDocsStore';
 import { FormComponentProps } from 'antd/lib/form';
-import { Form, Input, Upload, Button, Icon, Select, Modal } from 'antd';
+import { Form, Input, Upload, Button, Icon, Modal } from 'antd';
 import DocsNameModal from './DocsNameModal';
+import Header from '../../../components/Header';
 const { httpServer } = require('../../../system.config');
 import './index.css';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const TextArea = Input.TextArea;
 
 const formItemLayout = {
     labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 4 },
     },
     wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
+        sm: { span: 20 },
     },
 };
 
 const buttonItemLayout = {
     wrapperCol: { span: 16, offset: 8 },
 };
-
-// const uploadProps = {
-//     action: '//jsonplaceholder.typicode.com/posts/',
-//     onChange({ file, fileList }: any) {
-//         if (file.status !== 'uploading') {
-//             console.log(file, fileList);
-//         }
-//     },
-//     // defaultFileList: [{
-//     //     uid: 1,
-//     //     name: 'xxx.png',
-//     //     status: 'done',
-//     //     reponse: 'Server Error 500', // custom error message to show
-//     //     url: 'http://www.baidu.com/xxx.png',
-//     // }, {
-//     //     uid: 2,
-//     //     name: 'yyy.png',
-//     //     status: 'done',
-//     //     url: 'http://www.baidu.com/yyy.png',
-//     // }, {
-//     //     uid: 3,
-//     //     name: 'zzz.png',
-//     //     status: 'error',
-//     //     reponse: 'Server Error 500', // custom error message to show
-//     //     url: 'http://www.baidu.com/zzz.png',
-//     // }],
-// };
 
 export interface UploadDocsProps {
     uploadDocs: UploadDocsStore;
@@ -75,8 +49,8 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
         e.preventDefault();
         form.validateFields((err, values) => {
             if (!err) {
-                doSubmitDocsInfo(values).then((result)=> {
-                    if(result.success){
+                doSubmitDocsInfo(values).then((result) => {
+                    if (result.success) {
                         Modal.success({
                             title: '上传成功',
                             content: '恭喜小主，上传成功啦 😊'
@@ -88,14 +62,14 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                             title: '上传失败',
                             content: result.errorCode
                         });
-                    }    
+                    }
                 },
-                ()=> {
-                    Modal.error({
-                        title: '上传失败',
-                        content: '由于外力影响，上传失败啦 😢'
+                    () => {
+                        Modal.error({
+                            title: '上传失败',
+                            content: '由于外力影响，上传失败啦 😢'
+                        });
                     });
-                });
             }
         });
     }
@@ -122,15 +96,15 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
         let { form } = this.props;
         if (info.file.status === 'done') {
             form.setFieldsValue({
-                filename: info.file.response.data.filename
+                docsLink: info.file.response.data.docsLink
             });
         } else if (info.file.status === 'error') {
-            
+
         }
     };
 
     componentWillUpdate(nextProps: UploadDocsProps & FormComponentProps) {
-        const { form: { setFieldsValue }, uploadDocs: { newDocsNameId, newDocsTypeId,  resetNewDocsId } } = nextProps;
+        const { form: { setFieldsValue }, uploadDocs: { newDocsNameId, newDocsTypeId, resetNewDocsId } } = nextProps;
         if (newDocsNameId) {
             setFieldsValue({
                 docsNameId: newDocsNameId
@@ -145,84 +119,91 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
         }
     }
 
-    componentDidMount() {
-        const { uploadDocs: { fetchDocsNameList, fetchDocsTypeList } } = this.props;
-        fetchDocsNameList();
-        fetchDocsTypeList();
-    }
+    // componentDidMount() {
+    //     const { uploadDocs: { fetchDocsNameList, fetchDocsTypeList } } = this.props;
+    //     fetchDocsNameList();
+    //     fetchDocsTypeList();
+    // }
 
     modalCreator = () => <DocsNameModal />
 
     render() {
-        const { form: { getFieldDecorator }, uploadDocs: { docsNameList, docsTypeList } } = this.props;
+        const { form: { getFieldDecorator } } = this.props;
         return (
             <div className='UploadDocs-container'>
+                <Header headerSmall={true} />
+                <div className='UploadDocs-title'>
+                    <h2>上传文档</h2>
+                </div>
                 <Form onSubmit={this.handleSubmit} className="uploadDocs-form">
                     <FormItem
                         {...formItemLayout}
                         label="文档名称"
                     >
-                        {getFieldDecorator('docsNameId', {
-                            rules: [{ required: true, message: '请输入文档名称' }],
-                        })(
-                            <Select
-                                showSearch
-                                placeholder="请选择文档名称"
-                                optionFilterProp="children"
-                                filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                            >
+                        {getFieldDecorator('docsName', {
+                            rules: [
                                 {
-                                    docsNameList.map(({ _id, name }) =>
-                                        <Option value={_id} key={_id}>{name}</Option>
-                                    )
+                                    required: true, message: '请输入文档名称'
+                                },
+                                {
+                                    max: 50,
+                                    message: '文档名称不能多于 50 字'
                                 }
-                            </Select>
+                            ],
+                        })(
+                            <Input
+                                placeholder="文档名称"
+                            />
                         )}
                     </FormItem>
-                    <FormItem
+                    {/* <FormItem
                         style={{ textAlign: 'right' }}
                     >
                         <Button onClick={()=> this.handleAddName('docsName')}>
                             + 文档名称
                         </Button>
-                    </FormItem>
+                    </FormItem> */}
                     <FormItem
                         {...formItemLayout}
                         label="文档类型"
                     >
-                        {getFieldDecorator('docsTypeId', {
-                            rules: [{ required: true, message: '请输入文档类型' }],
-                        })(
-                            <Select
-                                showSearch
-                                placeholder="请选择文档类型"
-                                optionFilterProp="children"
-                                filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                            >
+                        {getFieldDecorator('docsType', {
+                            rules: [
+                                { required: true, message: '请输入文档类型' },
                                 {
-                                    docsTypeList.map(({ _id, name }) =>
-                                        <Option value={_id} key={_id}>{name}</Option>
-                                    )
-                                }
-                            </Select>
+                                    max: 50,
+                                    message: '文档类型不能多于 50 字'
+                                }],
+                        })(
+                            <Input
+                                placeholder="文档类型"
+                            />
                         )}
                     </FormItem>
-                    <FormItem
+                    {/* <FormItem
                         style={{ textAlign: 'right' }}
                     >
                         <Button onClick={()=> this.handleAddName('docsType')}>
                             + 文档类型
                         </Button>
-                    </FormItem>
+                    </FormItem> */}
                     <FormItem
                         {...formItemLayout}
-                        label="版本号"
+                        label="文档简介"
                     >
-                        {getFieldDecorator('docsVersion', {
-                            rules: [{ required: true, message: '请输入文档版本号' }],
+                        {getFieldDecorator('docsIntro', {
+                            rules: [
+                                {
+                                    required: true, message: '请输入文档简介'
+                                },
+                                {
+                                    max: 200,
+                                    message: '文档简介不能多于 200 字'
+                                }
+                            ],
                         })(
-                            <Input
-                                placeholder="文档版本"
+                            <TextArea
+                                placeholder="文档简介"
                             />
                         )}
                     </FormItem>
@@ -231,7 +212,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                         label="日期"
                     >
                         {getFieldDecorator('createInstance', {
-                            initialValue: moment(new Date()).format('YYYY-MM-DD HH:MM:SS'),
+                            initialValue: moment(new Date()).format('YYYY-MM-DD HH:mm:SS'),
                             rules: [{ required: true, message: '请输入日期' }],
                         })(
                             <Input
@@ -264,7 +245,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     <FormItem
                         {...formItemLayout}
                     >
-                        {getFieldDecorator('filename')(
+                        {getFieldDecorator('docsLink')(
                             <Input
                                 type='hidden'
                             />
@@ -274,7 +255,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     <FormItem
                         {...buttonItemLayout}
                     >
-                        <Button type="primary" htmlType="submit" style={{marginRight: 20}}>
+                        <Button type="primary" htmlType="submit" style={{ marginRight: 20 }}>
                             提交
                         </Button>
                         <Button onClick={this.handleCancel}>
