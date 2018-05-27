@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import * as moment from 'moment';
 import UploadDocsStore from '../UploadDocsStore';
 import { FormComponentProps } from 'antd/lib/form';
-import { Form, Input, Upload, Button, Icon, Modal } from 'antd';
+import { Form, Input, Upload, Button, Icon, Modal, Spin } from 'antd';
 import DocsNameModal from './DocsNameModal';
 import Header from '../../../components/Header';
 const { httpServer } = require('../../../system.config');
@@ -49,7 +49,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
         e.preventDefault();
         form.validateFields((err, values) => {
             if (!err) {
-                doSubmitDocsInfo(values).then((result) => {
+                doSubmitDocsInfo(values).then((result: any) => {
                     if (result.success) {
                         Modal.success({
                             title: '上传成功',
@@ -128,7 +128,8 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
     modalCreator = () => <DocsNameModal />
 
     render() {
-        const { form: { getFieldDecorator } } = this.props;
+        //, uploadDocs: { doUploading }
+        const { form: { getFieldDecorator }, uploadDocs: { doUploading } } = this.props;
         return (
             <div className='UploadDocs-container'>
                 <Header headerSmall={true} />
@@ -264,6 +265,15 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     </FormItem>
                 </Form>
                 {this.modalCreator()}
+                <Modal
+                    visible={doUploading}
+                    footer={null}
+                    closable={false}
+                    maskClosable={true}
+                >
+                    <div style={{textAlign: 'center'}}> <p>文档信息上传中，请耐心等待 😊 ( 数据正在打包写入区块链中... )</p> <Spin  /> </div>
+                </Modal>
+
             </div>
         );
     }

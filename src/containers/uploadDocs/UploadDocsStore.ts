@@ -1,10 +1,9 @@
 import { action, observable } from 'mobx';
 import request from '../../utils/request';
+import { message } from 'antd';
+const { dappContactAddress } = require('../../system.config');
 var NebPay = require("nebpay.js");
 var nebPay = new NebPay();
-var serialNumber; //交易序列号
-var dappContactAddress = "n1xtqJ6Zf1GdBVK4oGPVzvoaGPQKoy1fMXV";
-
 
 export interface DocsNameModel {
     _id: string;
@@ -16,6 +15,12 @@ export interface DocsTypeModel {
     name: string;
 }
 
+var serialNumber = ''; //交易序列号
+let intervalQuery: any;
+let options = {
+    //callback: NebPay.config.mainnetUrl 主网
+    callback: process.env.NODE_ENV === 'development' ? NebPay.config.testnetUrl : NebPay.config.mainnetUrl
+};
 class UploadDocsStore {
 
     @observable currentPage: number = 1;
@@ -25,6 +30,7 @@ class UploadDocsStore {
     @observable docsTypeList: Array<DocsTypeModel> = [];
     @observable newDocsNameId: string = '';
     @observable newDocsTypeId: string = '';
+    @observable doUploading: boolean = false;
 
     rootStore: object;
 
@@ -104,20 +110,53 @@ class UploadDocsStore {
     }
 
     @action.bound
-    async doSubmitDocsInfo({docsName, docsType, docsIntro, createInstance, docsLink}: any) {
+    async doSubmitDocsInfo({ docsName, docsType, docsIntro, createInstance, docsLink }: any) {
         //数据提交前对数据清洗
         //Object.keys(userInfo).map((key: string) => userInfo[key] = filterInput(link[key]));
+        let cancelCall = false;
+        const that = this;
         var to = dappContactAddress;
         var value = "0";
         var callFunction = "save";
-        var callArgs = "[\""+docsName+"\",\""+docsType+"\",\""+docsIntro+"\",\""+createInstance+"\",\""+docsLink+"\"]";
+        var callArgs = "[\"" + docsName + "\",\"" + docsType + "\",\"" + docsIntro + "\",\"" + createInstance + "\",\"" + docsLink + "\"]";
         console.log(callArgs);
         serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
             listener: function (resp: any) {
-                console.log("thecallback is " + resp)
-            }
+                if (typeof resp === "object") {
+                    that.doUploading = true;
+                } else {
+                    that.doUploading = false;
+                    message.error('已取消上传');
+                    cancelCall = true;
+                }
+            },
+            callback: options.callback
         });
-        return {success: true, errorCode: ''};
+        return new Promise((resolve, reject) => {
+            intervalQuery = setInterval(function () {
+                if (cancelCall) {
+                    clearInterval(intervalQuery);
+                    return;
+                }
+                nebPay.queryPayInfo(serialNumber, options)   //search transaction result from server (result upload to server by app)
+                    .then(function (resp: any) {
+                        console.log("tx result: " + resp)   //resp is a JSON string
+                        var respObject = JSON.parse(resp)
+                        //code==0交易发送成功, status==1交易已被打包上链
+                        if (respObject.code === 0 && respObject.data.status === 1) {
+                            //交易成功,处理后续任务....
+                            clearInterval(intervalQuery);    //清除定时查询
+                            that.doUploading = false;
+                            resolve({ success: true, errorCode: '' });
+                        }
+                    })
+                    .catch(function (err: any) {
+                        console.log(err);
+                        that.doUploading = false;
+                        reject({ success: false, errorCode: '文档信息上传失败，请重试！' })
+                    });
+            }, 10000);
+        });
     }
 
     @action.bound

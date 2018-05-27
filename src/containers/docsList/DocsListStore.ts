@@ -1,11 +1,9 @@
 import { action, observable } from 'mobx';
 const nebulas = require("nebulas");
+const { dappContactAddress, contractHttpAddress } = require('../../system.config');
 
-var dappContactAddress = "n1xtqJ6Zf1GdBVK4oGPVzvoaGPQKoy1fMXV";
 var neb = new nebulas.Neb();
-var httpAddress = "https://mainnet.nebulas.io";
-//var httpAddress = "https://testnet.nebulas.io";
-neb.setRequest(new nebulas.HttpRequest(httpAddress));
+neb.setRequest(new nebulas.HttpRequest(contractHttpAddress));
 
 export interface DocsItemModel {
     _id: string;
@@ -30,7 +28,7 @@ class DocsListStore {
 
     @action.bound
     async fetchDocsList(walletAddress: string) {
-        if(!walletAddress){
+        if (!walletAddress) {
             return;
         }
         this.docsEmpty = false;
@@ -46,10 +44,10 @@ class DocsListStore {
             "function": callFunction,
             "args": callArgs
         }
-        let {result} = await neb.api.call(from, dappContactAddress, value, nonce, gas_price, gas_limit, contract)
+        let { result } = await neb.api.call(from, dappContactAddress, value, nonce, gas_price, gas_limit, contract)
         if (result && result !== 'null') {
             this.docsItemList = JSON.parse(result);
-        }else {
+        } else {
             this.docsEmpty = true;
         }
         this.showLoading = false;

@@ -13,6 +13,9 @@ const defaultOptionsDev = {
         'content-type': 'application/json'
      },
  };
+ // test net
+ const dappContactAddressDev = 'n1f9GDHxUHd396vMdJ8tT9s7wbJntbAwgSm';
+ const contractHttpAddressDev = "https://testnet.nebulas.io";
 
 //部署模式，同域请求
 // 同域请求url
@@ -24,10 +27,15 @@ const defaultOptionsProd = {
         'content-type': 'application/json'
     },
 };
+// main net
+const dappContactAddressProd = 'n1xtqJ6Zf1GdBVK4oGPVzvoaGPQKoy1fMXV';
+const contractHttpAddressProd = "https://mainnet.nebulas.io";
 
 module.exports = {
     httpServer: debug ? httpServerDev : httpServerProd,
     defaultOptions: debug ? defaultOptionsDev : defaultOptionsProd,
     limit: 30,
-    registor: false
+    registor: false,
+    dappContactAddress: debug ? dappContactAddressDev : dappContactAddressProd,
+    contractHttpAddress: debug ? contractHttpAddressDev : contractHttpAddressProd,
 };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import Header from '../../components/Header';
 import NasSearch from '../../components/NasSearch';
 import DocsListStore from '../docsList/DocsListStore';
@@ -60,6 +60,8 @@ class Home extends React.Component<HomeProps & RouteComponentProps<any>, AppStat
         if (value) {
             fetchDocsList(value);
             history.push('/documents');
+        }else {
+            message.error(<p style={{display: 'inline-block', margin: 0}}>请输入钱包地址！ <a href="#faq">查看使用说明</a></p>);
         }
     };
 
@@ -106,7 +108,7 @@ class Home extends React.Component<HomeProps & RouteComponentProps<any>, AppStat
                         </li>
                     </ul>
                 </section>
-                <section className='App-faq'>
+                <section className='App-faq' id='faq'>
                     <h2> <span>FAQ</span></h2>
                     <ul>
                         {this.renderFaqItems()}
