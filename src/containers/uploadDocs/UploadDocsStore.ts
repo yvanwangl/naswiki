@@ -51,6 +51,11 @@ class UploadDocsStore {
     }
 
     @action.bound
+    resetUploading() {
+        this.doUploading = false;
+    }
+
+    @action.bound
     resetNewDocsId(type: string) {
         this[type] = '';
     }
@@ -120,6 +125,7 @@ class UploadDocsStore {
         var callFunction = "save";
         var callArgs = "[\"" + docsName + "\",\"" + docsType + "\",\"" + docsIntro + "\",\"" + createInstance + "\",\"" + docsLink + "\"]";
         console.log(callArgs);
+        that.doUploading = true;
         serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
             listener: function (resp: any) {
                 if (typeof resp === "object") {

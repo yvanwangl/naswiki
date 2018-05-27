@@ -129,7 +129,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
 
     render() {
         //, uploadDocs: { doUploading }
-        const { form: { getFieldDecorator }, uploadDocs: { doUploading } } = this.props;
+        const { form: { getFieldDecorator }, uploadDocs: { doUploading, resetUploading } } = this.props;
         return (
             <div className='UploadDocs-container'>
                 <Header headerSmall={true} />
@@ -269,9 +269,23 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     visible={doUploading}
                     footer={null}
                     closable={false}
-                    maskClosable={true}
                 >
-                    <div style={{textAlign: 'center'}}> <p>文档信息上传中，请耐心等待 😊 ( 数据正在打包写入区块链中... )</p> <Spin  /> </div>
+                    <div style={{ textAlign: 'left' }}>
+                        <div style={{ marginBottom: 24 }}>
+                            <Spin size="small" style={{ display: 'inline-block', marginRight: 8 }} />
+                            文档信息上传中，请耐心等待
+                        </div>
+                        <i style={{ color: '#999' }}>
+                            注意：请确保已经安装了 Nas 钱包插件，如果没有安装，<br />
+                            请点击
+                            <a
+                                href="https://github.com/ChengOrangeJu/WebExtensionWallet"
+                                target='_blank'
+                                onClick={resetUploading}
+                            > WebExtensionWallet </a>
+                            进行安装后重试
+                        </i>
+                    </div>
                 </Modal>
 
             </div>
