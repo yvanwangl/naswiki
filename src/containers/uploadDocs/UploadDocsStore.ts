@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx';
 import request from '../../utils/request';
 import { message } from 'antd';
-const { dappContactAddress } = require('../../system.config');
+const { dappContactAddress, neturlKey } = require('../../system.config');
 var NebPay = require("nebpay.js");
 var nebPay = new NebPay();
 
@@ -18,8 +18,8 @@ export interface DocsTypeModel {
 var serialNumber = ''; //交易序列号
 let intervalQuery: any;
 let options = {
-    //callback: NebPay.config.mainnetUrl 主网
-    callback: process.env.NODE_ENV === 'development' ? NebPay.config.testnetUrl : NebPay.config.mainnetUrl
+    //callback: NebPay.config.mainnetUrl 主网 NebPay.config.testnetUrl 测试网
+    callback: NebPay.config[neturlKey]
 };
 class UploadDocsStore {
 
