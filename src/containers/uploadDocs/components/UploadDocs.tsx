@@ -213,7 +213,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                         label="日期"
                     >
                         {getFieldDecorator('createInstance', {
-                            initialValue: moment(new Date()).format('YYYY-MM-DD HH:mm:SS'),
+                            initialValue: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
                             rules: [{ required: true, message: '请输入日期' }],
                         })(
                             <Input
